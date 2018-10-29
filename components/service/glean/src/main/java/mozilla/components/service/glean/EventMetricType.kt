@@ -30,6 +30,9 @@ data class EventMetricType(
     val objects: List<String>,
     val allowedExtraKeys: List<String>? = null
 ) : CommonMetricData {
+
+    override val defaultStorageDestinations: List<String> = listOf("events")
+
     private val logger = Logger("glean/EventMetricType")
 
     companion object {
@@ -95,7 +98,7 @@ data class EventMetricType(
 
         // Delegate storing the event to the storage engine.
         EventsStorageEngine.record(
-            stores = sendInPings,
+            stores = getStorageNames(),
             category = category,
             name = name,
             objectId = objectId,

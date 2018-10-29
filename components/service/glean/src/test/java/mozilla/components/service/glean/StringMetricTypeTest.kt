@@ -22,7 +22,8 @@ class StringMetricTypeTest {
     }
 
     @Test
-    fun `The API saves to its storage engine`() {
+        assertEquals(listOf("metrics"), stringMetric.defaultStorageDestinations)
+    @Test    fun `The API saves to its storage engine`() {
         // Define a 'stringMetric' string metric, which will be stored in "store1"
         val stringMetric = StringMetricType(
             disabled = false,
