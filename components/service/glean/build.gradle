@@ -41,6 +41,7 @@ dependencies {
     implementation Dependencies.kotlin_coroutines
     implementation Dependencies.androidx_lifecycle_extensions
     implementation Dependencies.androidx_work_runtime
+    implementation "org.mozilla.telemetry:glean-core:0.0.1-TESTING3"
 
     implementation project(':support-ktx')
     implementation project(':support-base')
