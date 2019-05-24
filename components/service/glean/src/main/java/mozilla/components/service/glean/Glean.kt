@@ -5,9 +5,8 @@
 package mozilla.components.service.glean
 
 import android.content.Context
-import kotlinx.coroutines.Job
 import mozilla.components.service.glean.config.Configuration
-import mozilla.telemetry.glean.Glean
+import mozilla.telemetry.glean.Glean as GleanCore
 
 /**
  * In contrast with other glean-ac classes (i.e. Configuration), we can't
@@ -35,14 +34,18 @@ object Glean {
         applicationContext: Context,
         configuration: Configuration = Configuration()
     ) {
-        assert(false) {"Not implemented"}
+        // TODO: Implement the migration code.
+        GleanCore.initialize(
+            applicationContext = applicationContext,
+            configuration = configuration
+        )
     }
 
     /**
      * Returns true if the Glean library has been initialized.
      */
     fun isInitialized(): Boolean {
-        assert(false) {"Not implemented"}
+        assert(false) {"Not implemented, this needs to be exposed by GleanCore"}
         return false
     }
 
@@ -53,7 +56,7 @@ object Glean {
      * by Glean.
      */
     fun registerPings(pings: Any) {
-        assert(false) {"Not implemented"}
+        GleanCore.registerPings(pings)
     }
 
     /**
@@ -67,15 +70,14 @@ object Glean {
      * @param enabled When true, enable metric collection.
      */
     fun setUploadEnabled(enabled: Boolean) {
-        assert(false) {"Not implemented"}
+        GleanCore.setUploadEnabled(enabled)
     }
 
     /**
      * Get whether or not Glean is allowed to record and upload data.
      */
     fun getUploadEnabled(): Boolean {
-        assert(false) {"Not implemented"}
-        return false
+        return GleanCore.getUploadEnabled()
     }
 
     /**
@@ -93,7 +95,11 @@ object Glean {
         branch: String,
         extra: Map<String, String>? = null
     ) {
-        assert(false) {"Not implemented"}
+        GleanCore.setExperimentActive(
+            experimentId = experimentId,
+            branch = branch,
+            extra = extra
+        )
     }
 
     /**
@@ -102,33 +108,13 @@ object Glean {
      * @param experimentId The id of the experiment to deactivate.
      */
     fun setExperimentInactive(experimentId: String) {
-        assert(false) {"Not implemented"}
+        GleanCore.setExperimentInactive(experimentId = experimentId)
     }
 
     /**
      * Handle the background event and send the appropriate pings.
      */
     fun handleBackgroundEvent() {
-        assert(false) {"Not implemented"}
-    }
-
-    /**
-     * Send a list of pings by name.
-     *
-     * Each ping will be looked up in the known instances of [PingType]. If the
-     * ping isn't known, an error is logged and the ping isn't queued for uploading.
-     *
-     * The ping content is assembled as soon as possible, but upload is not
-     * guaranteed to happen immediately, as that depends on the upload
-     * policies.
-     *
-     * If the ping currently contains no content, it will not be sent.
-     *
-     * @param pingNames List of ping names to send.
-     * @return The async Job performing the work of assembling the ping
-     */
-    internal fun sendPingsByName(pingNames: List<String>): Job? {
-        assert(false) {"Not implemented"}
-        return null
+        assert(false) {"Not implemented, and we really shouldn't expose this."}
     }
 }
