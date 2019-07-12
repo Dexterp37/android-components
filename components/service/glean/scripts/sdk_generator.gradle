@@ -150,6 +150,11 @@ ext.gleanGenerateMetricsAPI = {
             commandLine new File(GLEAN_MINICONDA_DIR, "bin/python")
         }
 
+        def gleanRegistryFilesDir = projectDir
+        if (project.ext.has("gleanRegistryFilesDir")) {
+            gleanRegistryFilesDir = project.ext.get("gleanRegistryFilesDir")
+        }
+
         args "-c"
         args runPythonScript
         args "glean_parser"
@@ -161,8 +166,8 @@ ext.gleanGenerateMetricsAPI = {
         args "$sourceOutputDir"
         args "-s"
         args "namespace=$fullNamespace"
-        args "$projectDir/metrics.yaml"
-        args "$projectDir/pings.yaml"
+        args "$gleanRegistryFilesDir/metrics.yaml"
+        args "$gleanRegistryFilesDir/pings.yaml"
 
         // If we're building the Glean library itself (rather than an
         // application using Glean) pass the --allow-reserved flag so we can

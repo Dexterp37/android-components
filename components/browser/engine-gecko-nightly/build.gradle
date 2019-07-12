@@ -2,6 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+plugins {
+    id "com.jetbrains.python.envs" version "0.0.26"
+}
+
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
@@ -56,14 +60,16 @@ dependencies {
     androidTestImplementation project(':tooling-fetch-tests')
 }
 
+ext.gleanRegistryFilesDir = "$buildDir/tmp/glean"
+
 afterEvaluate {
     configurations.geckoViewApiConfig.getResolvedConfiguration().firstLevelModuleDependencies.each { dep ->
         println("Dependency ${dep}")
         dep.moduleArtifacts.each { artifact ->
             println("Artifact file: ${artifact.file} - type: ${artifact.type}")
             copy {
-                from zipTree(artifact.file).matching { include 'assets/omni.ja' }.singleFile
-                into "$buildDir/tmp/glean"
+                from zipTree(artifact.file).matching { include 'assets/metrics.yaml' }.singleFile
+                into ext.gleanRegistryFilesDir
                 eachFile { println("Copied ${it.file}") }
             }
         }
@@ -71,6 +77,7 @@ afterEvaluate {
 }
 
 //apply from: 'gv_aar_test.gradle'
+apply from: '../../service/glean/scripts/sdk_generator.gradle'
 
 apply from: '../../../publish.gradle'
 ext.configurePublish(config.componentsGroupId, archivesBaseName, project.ext.description)
